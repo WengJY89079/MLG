@@ -76,9 +76,9 @@ def ml_loop():
                         downX = 400 - downX
                 #print(downX)
                 if(scene_info.platform[0] + 20 > downX):
-                    #comm.send_instruction(scene_info.frame, PlatformAction.MOVE_LEFT)
+                    comm.send_instruction(scene_info.frame, PlatformAction.MOVE_LEFT)
                 elif(scene_info.platform[0] - 20 < downX):
-                    #comm.send_instruction(scene_info.frame, PlatformAction.MOVE_RIGHT)
+                    comm.send_instruction(scene_info.frame, PlatformAction.MOVE_RIGHT)
                 else:
                     comm.send_instruction(scene_info.frame, PlatformAction.NONE)
             #comm.send_instruction(scene_info.frame, PlatformAction.MOVE_LEFT)
