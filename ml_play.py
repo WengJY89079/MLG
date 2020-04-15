@@ -6,6 +6,10 @@ import games.arkanoid.communication as comm
 from games.arkanoid.communication import ( \
     SceneInfo, GameStatus, PlatformAction
 )
+import pickle
+import numpy as np
+import os
+import random
 
 def ml_loop():
     """
@@ -42,7 +46,6 @@ def ml_loop():
             scene_info.status == GameStatus.GAME_PASS:
             # Do some stuff if needed
             ball_served = False
-
             # 3.2.1. Inform the game process that ml process is ready
             comm.ml_ready()
             continue
@@ -58,11 +61,17 @@ def ml_loop():
             BallY = BallNewY
         # 3.4. Send the instruction for this frame to the game process
         if not ball_served:
-            comm.send_instruction(scene_info.frame, PlatformAction.SERVE_TO_LEFT)
+            comm.send_instruction(scene_info.frame, PlatformAction.SERVE_TO_RIGHT)
             ball_served = True
         else:
+            
             if(nowVec[1] < 0):
-                comm.send_instruction(scene_info.frame, PlatformAction.NONE)
+                if(scene_info.platform[0] > 80):
+                    comm.send_instruction(scene_info.frame, PlatformAction.MOVE_LEFT)
+                elif(scene_info.platform[0] < 80):
+                    comm.send_instruction(scene_info.frame, PlatformAction.MOVE_RIGHT)
+                else:
+                    comm.send_instruction(scene_info.frame, PlatformAction.NONE)
             elif(nowVec[0] !=0):
                 ins = nowVec[0]
                 downStep = int((400 - BallNewY) / nowVec[1])
